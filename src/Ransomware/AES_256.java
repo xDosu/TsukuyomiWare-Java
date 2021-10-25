@@ -29,35 +29,17 @@ public class AES_256 {
             e.printStackTrace();
         }
     }
-    public static String encrypt(File inputFile, File outputFile,String secret) {
-        try {
+    public static void encrypt(File inputFile, File outputFile,String secret) {
+        doJob(inputFile,outputFile,secret,"AES/ECB/PKCS5Padding",1);
+    }
+    public static void decrypt(File inputFile, File outputFile,String secret) {
+        doJob(inputFile,outputFile,secret,"AES/ECB/PKCS5PADDING",2);
+    }
+    public static void doJob(File inputFile, File outputFile, String secret,String instance,int mode){
+        try{
             setKey(secret);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            FileInputStream inputStream = new FileInputStream(inputFile);
-            byte[] inputBytes = new byte[(int) inputFile.length()];
-            inputStream.read(inputBytes);
-
-            byte[] outputBytes = cipher.doFinal(inputBytes);
-
-            FileOutputStream outputStream = new FileOutputStream(outputFile);
-            outputStream.write(outputBytes);
-
-            inputStream.close();
-            outputStream.close();
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error while encrypting: " + e.toString());
-        }
-        return null;
-    }
-
-    public static String decrypt(File inputFile, File outputFile,String secret) {
-        try {
-            setKey(secret);
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            cipher.init(mode, secretKey);
 
             FileInputStream inputStream = new FileInputStream(inputFile);
             byte[] inputBytes = new byte[(int) inputFile.length()];
@@ -70,10 +52,9 @@ public class AES_256 {
 
             inputStream.close();
             outputStream.close();
+        }catch(Exception e){
+            System.out.println("Error while encrypting/decrypting: " + e.toString());
         }
-        catch (Exception e) {
-            System.out.println("Error while decrypting: " + e.toString());
-        }
-        return null;
+
     }
 }

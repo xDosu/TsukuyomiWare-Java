@@ -2,7 +2,6 @@ package Ransomware.Decrypter;
 
 import Ransomware.Crypter;
 import Ransomware.AES_256;
-
 import java.io.File;
 
 public class Decrypter extends Crypter {
